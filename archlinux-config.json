@@ -14,13 +14,30 @@
           {
             "btrfs": [],
             "dev_path": null,
-            "flags": ["Boot", "ESP"],
+            "flags": [
+              "Boot",
+              "ESP"
+            ],
             "fs_type": "fat32",
             "mount_options": [],
             "mountpoint": "/efi",
             "obj_id": "efi-part",
-            "size": {"unit": "MiB", "value": 1024},
-            "start": {"unit": "MiB", "value": 1},
+            "size": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "MiB",
+              "value": 1024
+            },
+            "start": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "MiB",
+              "value": 1
+            },
             "status": "create",
             "type": "primary"
           },
@@ -32,28 +49,76 @@
             "mount_options": [],
             "mountpoint": null,
             "obj_id": "swap-part",
-            "size": {"unit": "GiB", "value": 16},
-            "start": {"unit": "MiB", "value": 1025},
+            "size": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "GiB",
+              "value": 16
+            },
+            "start": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "MiB",
+              "value": 1025
+            },
             "status": "create",
             "type": "primary"
           },
           {
             "btrfs": [
-              {"mountpoint": "/", "name": "@"},
-              {"mountpoint": "/home", "name": "@home"},
-              {"mountpoint": "/var/log", "name": "@log"},
-              {"mountpoint": "/var/cache", "name": "@cache"},
-              {"mountpoint": "/.snapshots", "name": "@snapshots"},
-              {"mountpoint": "/var/cache/pacman/pkg", "name": "@pkg"}
+              {
+                "mountpoint": "/",
+                "name": "@"
+              },
+              {
+                "mountpoint": "/home",
+                "name": "@home"
+              },
+              {
+                "mountpoint": "/var/log",
+                "name": "@log"
+              },
+              {
+                "mountpoint": "/var/cache",
+                "name": "@cache"
+              },
+              {
+                "mountpoint": "/.snapshots",
+                "name": "@snapshots"
+              },
+              {
+                "mountpoint": "/var/cache/pacman/pkg",
+                "name": "@pkg"
+              }
             ],
             "dev_path": null,
             "flags": [],
             "fs_type": "btrfs",
-            "mount_options": ["compress=zstd:1"],
+            "mount_options": [
+              "compress=zstd:1"
+            ],
             "mountpoint": null,
             "obj_id": "btrfs-part",
-            "size": {"unit": "B", "value": 0},
-            "start": {"unit": "B", "value": 17716740096},
+            "size": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "B",
+              "value": 0
+            },
+            "start": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "B",
+              "value": 17716740096
+            },
             "status": "create",
             "type": "primary"
           }
@@ -63,11 +128,16 @@
     ],
     "disk_encryption": {
       "encryption_type": "luks",
-      "partitions": ["btrfs-part"]
+      "partitions": [
+        "btrfs-part"
+      ]
     }
   },
   "hostname": "archlaptop",
-  "kernels": ["linux-hardened", "linux"],
+  "kernels": [
+    "linux-hardened",
+    "linux"
+  ],
   "locale_config": {
     "kb_layout": "us",
     "sys_enc": "UTF-8",
@@ -84,13 +154,17 @@
         "https://mirrors.xtom.nl/archlinux/$repo/os/$arch"
       ]
     },
-    "optional_repositories": ["multilib"]
+    "optional_repositories": [
+      "multilib"
+    ]
   },
   "ntp": true,
   "packages": [
     "base-devel",
-    "linux-hardened", "linux-hardened-headers",
-    "linux", "linux-headers",
+    "linux-hardened",
+    "linux-hardened-headers",
+    "linux",
+    "linux-headers",
     "intel-ucode",
     "efibootmgr",
     "mkinitcpio",
@@ -105,6 +179,7 @@
     "ccid",
     "networkmanager",
     "iwd",
+    "openssh",
     "git",
     "chezmoi",
     "age",
@@ -134,7 +209,11 @@
     "fzf",
     "podman",
     "podman-compose",
-    "distrobox"
+    "distrobox",
+    "bluez",
+    "bluez-utils",
+    "avahi",
+    "nss-mdns"
   ],
   "parallel_downloads": 10,
   "profile_config": {
@@ -146,8 +225,14 @@
     "snapper-cleanup.timer",
     "NetworkManager",
     "pcscd.service",
+    "fprintd.service",
     "reflector.timer",
-    "ufw.service"
+    "ufw.service",
+    "fstrim.timer",
+    "systemd-timesyncd.service",
+    "sshd.service",
+    "bluetooth.service",
+    "avahi-daemon.service"
   ],
   "swap": true,
   "timezone": "Europe/Amsterdam",
