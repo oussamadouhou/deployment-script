@@ -1,0 +1,240 @@
+{
+  "archinstall-language": "English",
+  "bootloader_config": {
+    "bootloader": "systemd-boot",
+    "removable": false,
+    "uki": true
+  },
+  "disk_config": {
+    "config_type": "default_layout",
+    "device_modifications": [
+      {
+        "device": "/dev/nvme0n1",
+        "partitions": [
+          {
+            "btrfs": [],
+            "dev_path": null,
+            "flags": [
+              "Boot",
+              "ESP"
+            ],
+            "fs_type": "fat32",
+            "mount_options": [],
+            "mountpoint": "/efi",
+            "obj_id": "efi-part",
+            "size": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "MiB",
+              "value": 1024
+            },
+            "start": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "MiB",
+              "value": 1
+            },
+            "status": "create",
+            "type": "primary"
+          },
+          {
+            "btrfs": [],
+            "dev_path": null,
+            "flags": [],
+            "fs_type": "swap",
+            "mount_options": [],
+            "mountpoint": null,
+            "obj_id": "swap-part",
+            "size": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "GiB",
+              "value": 16
+            },
+            "start": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "MiB",
+              "value": 1025
+            },
+            "status": "create",
+            "type": "primary"
+          },
+          {
+            "btrfs": [
+              {
+                "mountpoint": "/",
+                "name": "@"
+              },
+              {
+                "mountpoint": "/home",
+                "name": "@home"
+              },
+              {
+                "mountpoint": "/var/log",
+                "name": "@log"
+              },
+              {
+                "mountpoint": "/var/cache",
+                "name": "@cache"
+              },
+              {
+                "mountpoint": "/.snapshots",
+                "name": "@snapshots"
+              },
+              {
+                "mountpoint": "/var/cache/pacman/pkg",
+                "name": "@pkg"
+              }
+            ],
+            "dev_path": null,
+            "flags": [],
+            "fs_type": "btrfs",
+            "mount_options": [
+              "compress=zstd:1"
+            ],
+            "mountpoint": null,
+            "obj_id": "btrfs-part",
+            "size": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "B",
+              "value": 0
+            },
+            "start": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "B",
+              "value": 17716740096
+            },
+            "status": "create",
+            "type": "primary"
+          }
+        ],
+        "wipe": true
+      }
+    ],
+    "disk_encryption": {
+      "encryption_type": "luks",
+      "partitions": [
+        "btrfs-part"
+      ]
+    }
+  },
+  "hostname": "archlaptop",
+  "kernels": [
+    "linux-hardened",
+    "linux"
+  ],
+  "locale_config": {
+    "kb_layout": "us",
+    "sys_enc": "UTF-8",
+    "sys_lang": "en_US.UTF-8"
+  },
+  "mirror_config": {
+    "custom_repositories": [],
+    "custom_servers": [],
+    "mirror_regions": {
+      "Netherlands": [
+        "https://mirror.ams1.nl.leaseweb.net/archlinux/$repo/os/$arch",
+        "https://archlinux.mirror.wearetriple.com/$repo/os/$arch",
+        "https://mirror.koddos.net/archlinux/$repo/os/$arch",
+        "https://mirrors.xtom.nl/archlinux/$repo/os/$arch"
+      ]
+    },
+    "optional_repositories": [
+      "multilib"
+    ]
+  },
+  "ntp": true,
+  "packages": [
+    "base-devel",
+    "linux-hardened",
+    "linux-hardened-headers",
+    "linux",
+    "linux-headers",
+    "intel-ucode",
+    "efibootmgr",
+    "mkinitcpio",
+    "btrfs-progs",
+    "snapper",
+    "snap-pac",
+    "polkit",
+    "fprintd",
+    "yubikey-manager",
+    "opensc",
+    "pcsc-lite",
+    "ccid",
+    "networkmanager",
+    "iwd",
+    "openssh",
+    "git",
+    "chezmoi",
+    "age",
+    "bitwarden-cli",
+    "reflector",
+    "vim",
+    "neovim",
+    "htop",
+    "btop",
+    "tmux",
+    "zsh",
+    "fish",
+    "starship",
+    "ufw",
+    "man-db",
+    "man-pages",
+    "fastfetch",
+    "wget",
+    "curl",
+    "rsync",
+    "unzip",
+    "p7zip",
+    "ripgrep",
+    "fd",
+    "bat",
+    "eza",
+    "fzf",
+    "podman",
+    "podman-compose",
+    "distrobox",
+    "bluez",
+    "bluez-utils",
+    "avahi",
+    "nss-mdns"
+  ],
+  "parallel_downloads": 10,
+  "profile_config": {
+    "profile": "minimal"
+  },
+  "services": [
+    "systemd-boot-update",
+    "snapper-timeline.timer",
+    "snapper-cleanup.timer",
+    "NetworkManager",
+    "pcscd.service",
+    "fprintd.service",
+    "reflector.timer",
+    "ufw.service",
+    "fstrim.timer",
+    "systemd-timesyncd.service",
+    "sshd.service",
+    "bluetooth.service",
+    "avahi-daemon.service"
+  ],
+  "swap": true,
+  "timezone": "Europe/Amsterdam",
+  "version": "3.0.14"
+}

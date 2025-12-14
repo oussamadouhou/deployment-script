@@ -1,0 +1,2 @@
+[2025-12-14 12:17:37] - WARNING - Not enough permission to place log file at /var/log/archinstall/install.log, creating it in /home/odouhou/github/deployment-script/install.log instead
+[2025-12-14 12:17:37] - DEBUG - Creating yescrypt hash with rounds 5
