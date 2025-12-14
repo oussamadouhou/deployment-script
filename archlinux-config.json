@@ -70,8 +70,8 @@
             "obj_id": "btrfs-part",
             "size": {
               "sector_size": {"unit": "B", "value": 512},
-              "unit": "B",
-              "value": 0
+              "unit": "MiB",
+              "value": 470952
             },
             "start": {
               "sector_size": {"unit": "B", "value": 512},
