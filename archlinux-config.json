@@ -45,7 +45,7 @@
             "btrfs": [],
             "dev_path": null,
             "flags": [],
-            "fs_type": "swap-linux",
+            "fs_type": "linux-swap",
             "mount_options": [],
             "mountpoint": null,
             "obj_id": "swap-part",
@@ -63,7 +63,7 @@
                 "value": 512
               },
               "unit": "MiB",
-              "value": 1025
+              "value": 17409
             },
             "status": "create",
             "type": "primary"
