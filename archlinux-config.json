@@ -45,7 +45,7 @@
             "btrfs": [],
             "dev_path": null,
             "flags": [],
-            "fs_type": "swap",
+            "fs_type": "swap-linux",
             "mount_options": [],
             "mountpoint": null,
             "obj_id": "swap-part",
@@ -230,7 +230,6 @@
     "ufw.service",
     "fstrim.timer",
     "systemd-timesyncd.service",
-    "sshd.service",
     "bluetooth.service",
     "avahi-daemon.service"
   ],
