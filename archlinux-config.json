@@ -216,9 +216,6 @@
     "nss-mdns"
   ],
   "parallel_downloads": 10,
-  "profile_config": {
-    "profile": "minimal"
-  },
   "services": [
     "systemd-boot-update",
     "snapper-timeline.timer",
