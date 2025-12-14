@@ -127,7 +127,7 @@
     "fprintd",
     "yubikey-manager",
     "opensc",
-    "pcsc-lite",
+    "pcsclite",
     "ccid",
     "networkmanager",
     "iwd",
