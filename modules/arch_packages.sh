@@ -61,6 +61,7 @@ install_arch_base_packages() {
         rsync
         wget
         curl
+        syncthing
     )
     
     # Container and virtualization
