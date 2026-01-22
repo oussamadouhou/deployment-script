@@ -1,2 +1,35 @@
 docs
 archlinux*.md
+
+# Development artifacts
+cmd_history.txt
+install.log
+
+# Secrets and sensitive files (NEVER commit these)
+.bw_session
+.config/bws/token
+*.key
+*.pem
+*.crt
+.age
+key.txt
+
+# Environment files with secrets
+.env
+.env.*
+!.env.example
+
+# Cache and temporary files
+*.cache
+*.log
+.cache/
+__pycache__/
+*.pyc
+
+# Editor and OS files
+.DS_Store
+*.swp
+*.swo
+*~
+.idea/
+.vscode/

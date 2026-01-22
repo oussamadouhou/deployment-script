@@ -194,7 +194,56 @@ setup_dotfiles() {
     log "Setting up dotfiles with chezmoi..."
     
     load_module "dotfiles"
+    
+    # Setup BWS first (required for chezmoi templates)
+    setup_bitwarden_integration
+    
+    # Bootstrap BWS token if needed
+    bootstrap_bws_token
+    
     setup_chezmoi
+}
+
+bootstrap_bws_token() {
+    local user_home
+    user_home=$(eval echo "~${SUDO_USER:-$USER}")
+    local bws_token_file="${user_home}/.config/bws/token"
+    
+    # Skip if token already exists
+    if [ -f "${bws_token_file}" ]; then
+        log_info "BWS token already configured"
+        return 0
+    fi
+    
+    log "BWS (Bitwarden Secrets Manager) token required for secret management"
+    
+    # Check if BWS_ACCESS_TOKEN env var is set
+    if [ -n "${BWS_ACCESS_TOKEN:-}" ]; then
+        mkdir -p "$(dirname "${bws_token_file}")"
+        echo "${BWS_ACCESS_TOKEN}" > "${bws_token_file}"
+        chmod 600 "${bws_token_file}"
+        log "BWS token configured from environment"
+        return 0
+    fi
+    
+    # Prompt for token
+    echo ""
+    log_info "To use BWS for secret management, you need a BWS access token."
+    log_info "Get one from: https://vault.bitwarden.com → Secrets Manager → Access Tokens"
+    echo ""
+    
+    read -rsp "Enter BWS access token (or press Enter to skip): " bws_token
+    echo ""
+    
+    if [ -n "${bws_token}" ]; then
+        mkdir -p "$(dirname "${bws_token_file}")"
+        echo "${bws_token}" > "${bws_token_file}"
+        chmod 600 "${bws_token_file}"
+        log "BWS token configured"
+    else
+        log_warning "BWS token not provided. Some secrets may not be available."
+        log_info "You can configure it later: echo 'YOUR_TOKEN' > ${bws_token_file}"
+    fi
 }
 
 configure_system() {

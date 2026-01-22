@@ -137,6 +137,9 @@ EOF
 setup_bitwarden_integration() {
     log "Setting up Bitwarden integration for secret management..."
     
+    local user_home
+    user_home=$(eval echo "~${SUDO_USER:-$USER}")
+    
     # Ensure bitwarden-cli is installed
     if ! command -v bw &> /dev/null; then
         case "${PKG_MGR}" in
@@ -144,7 +147,6 @@ setup_bitwarden_integration() {
                 $SUDO pacman -S --noconfirm bitwarden-cli
                 ;;
             apt)
-                # Install via snap or download
                 if command -v snap &> /dev/null; then
                     $SUDO snap install bw
                 else
@@ -157,13 +159,90 @@ setup_bitwarden_integration() {
         esac
     fi
     
-    # Configure chezmoi template functions for bitwarden
+    # Install BWS (Bitwarden Secrets Manager) CLI
+    setup_bws_cli
+    
+    # Install bws-wrapper
+    setup_bws_wrapper
+    
+    log_info "Bitwarden integration complete"
+}
+
+setup_bws_cli() {
+    log "Installing BWS (Bitwarden Secrets Manager) CLI..."
+    
+    if command -v bws &> /dev/null; then
+        log_info "BWS CLI already installed"
+        return 0
+    fi
+    
+    case "${PKG_MGR}" in
+        pacman)
+            if command -v yay &> /dev/null; then
+                yay -S --noconfirm bws-bin
+            else
+                log_warning "Install yay first, then run: yay -S bws-bin"
+            fi
+            ;;
+        *)
+            log_info "Installing BWS CLI from GitHub release..."
+            local arch
+            arch=$(uname -m)
+            
+            local bws_version="1.0.0"
+            local url="https://github.com/bitwarden/sdk/releases/download/bws-v${bws_version}/bws-${arch}-unknown-linux-gnu-${bws_version}.zip"
+            local tmp_dir
+            tmp_dir=$(mktemp -d)
+            
+            if ! curl -fsSL "$url" -o "${tmp_dir}/bws.zip"; then
+                log_warning "Failed to download BWS CLI from ${url}"
+                rm -rf "${tmp_dir}"
+                return 1
+            fi
+            
+            if ! unzip -q "${tmp_dir}/bws.zip" -d "${tmp_dir}"; then
+                log_warning "Failed to extract BWS CLI"
+                rm -rf "${tmp_dir}"
+                return 1
+            fi
+            
+            $SUDO install -m 755 "${tmp_dir}/bws" /usr/local/bin/bws
+            rm -rf "${tmp_dir}"
+            
+            log "BWS CLI installed (v${bws_version})"
+            ;;
+    esac
+}
+
+setup_bws_wrapper() {
+    log "Installing bws-wrapper..."
+    
     local user_home
     user_home=$(eval echo "~${SUDO_USER:-$USER}")
-    local chezmoi_config="${user_home}/.config/chezmoi/chezmoi.toml"
+    local install_dir="${user_home}/.local/bin"
     
-    log_info "Bitwarden CLI installed. Use in templates with:"
-    log_info '  {{ (bitwardenFields "item-id").password.value }}'
+    mkdir -p "$install_dir"
+    
+    # Clone bws-wrapper repo (private - requires auth)
+    local tmp_dir
+    tmp_dir=$(mktemp -d)
+    
+    if git clone --depth 1 https://github.com/oussamadouhou/bws-wrapper.git "${tmp_dir}" 2>/dev/null; then
+        cp "${tmp_dir}/bin/bws-wrapper" "${install_dir}/bws-wrapper"
+        chmod +x "${install_dir}/bws-wrapper"
+        rm -rf "${tmp_dir}"
+        
+        # Create required directories
+        mkdir -p "${user_home}/.config/bws"
+        mkdir -p "${user_home}/.cache/bws"
+        mkdir -p "${user_home}/.local/share/bws"
+        
+        log "bws-wrapper installed to ${install_dir}"
+    else
+        log_warning "Could not clone bws-wrapper repo (private). Manual setup required."
+        log_info "Clone manually: git clone https://github.com/oussamadouhou/bws-wrapper.git"
+        log_info "Then run: ./install.sh"
+    fi
 }
 
 create_example_dotfiles() {
@@ -253,5 +332,7 @@ export -f initialize_chezmoi_with_repo
 export -f initialize_chezmoi_empty
 export -f setup_age_encryption
 export -f setup_bitwarden_integration
+export -f setup_bws_cli
+export -f setup_bws_wrapper
 export -f create_example_dotfiles
 export -f setup_git_config_template

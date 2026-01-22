@@ -1,0 +1,14 @@
+FROM archlinux:latest
+
+RUN pacman -Syu --noconfirm && \
+    pacman -S --noconfirm base-devel git sudo curl wget
+
+RUN useradd -m -G wheel testuser && \
+    echo "testuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+WORKDIR /home/testuser/deployment-script
+COPY --chown=testuser:testuser . .
+
+USER testuser
+
+CMD ["/bin/bash"]

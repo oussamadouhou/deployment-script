@@ -1,5 +1,0 @@
-1765714657.512426 ['/usr/bin/localectl', '--no-pager', 'status']
-1765714657.5533888 ['/usr/bin/localectl', '--no-pager', 'list-keymaps']
-1765714657.562408 ['/usr/bin/udevadm', 'settle']
-1765714657.5695004 ['/usr/bin/lsblk', '--json', '--bytes', '--output', 'name,path,pkname,log-sec,size,pttype,ptuuid,rota,tran,partn,partuuid,parttype,uuid,fstype,fsver,fsavail,fsuse%,type,mountpoint,mountpoints,fsroots']
-1765714657.5763462 ['/usr/bin/losetup', '-a']

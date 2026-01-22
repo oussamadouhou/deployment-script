@@ -196,6 +196,7 @@ install_arch_aur_packages() {
         devpod-bin
         brave-bin
         postman-bin
+        bws-bin
     )
     
     for package in "${aur_packages[@]}"; do
